@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+<head>
+    <title>Department Of Public Records - citizens</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div>
+        <span style="font-size: 1.5em">List of citizens</span>
+        <span style="float:right;">
+                    <a class="btn btn-outline-primary btn-lg" href="/citizen/new">New citizen</a>
+                </span>
+    </div>
+    <p>&nbsp;</p>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">SSN</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Middle Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Date of Birth</th>
+            <th scope="col">Yearly Income</th>
+            <th scope="col">State Where Born</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="datarow" th:each="citizen,iterStat : ${citizens}">
+            <th scope="row" th:text="${iterStat.count}+'.'"></th>
+            <td th:text="${citizen.socialSecurityNumber}"></td>
+            <td th:text="${citizen.firstName}"></td>
+            <td th:text="${citizen.middleName}"></td>
+            <td th:text="${citizen.lastName}"></td>
+            <td th:text="${#temporals.format(citizen.dateOfBirth, 'MMM dd, yyyy')}"></td>
+            <td th:text="${'$ '+#numbers.formatDecimal(citizen.yearlyIncome, 0, 'COMMA', 2, 'POINT')}"></td>
+            <td th:text="${citizen.state.stateCode +'-'+citizen.state.stateName}"></td>
+        </tr>
+        <tr style="font-size: 18px; color: #000000; font-weight: bold">
+            <td colspan="8">
+                <span class="text-uppercase">TNYI:</span>
+                <span class="text-uppercase" th:text="${'$ '+#numbers.formatDecimal(totalYearlyIncome, 0, 'COMMA', 2, 'POINT')}"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <hr/>
+</th:block>
+<th:block layout:fragment="footer"></th:block>
+</body>
+</html>
